@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>أثر — خطواتك الصغيرة، إرثك الكبير</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --navy: #1a2744;
+      --navy-light: #243352;
+      --navy-dark: #111b30;
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-glow: rgba(13,148,136,0.15);
+      --charcoal: #1c1f2e;
+      --charcoal-light: #252838;
+      --charcoal-card: #2a2d3e;
+      --red-accent: #ef4444;
+      --red-soft: rgba(239,68,68,0.12);
+      --yellow: #f59e0b;
+      --green: #22c55e;
+      --green-soft: rgba(34,197,94,0.12);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --border: rgba(255,255,255,0.06);
+      --border-active: rgba(13,148,136,0.4);
+      --shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    html, body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--charcoal);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      direction: rtl;
+    }
+
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    .screen.active { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+
+    /* ── SPLASH ── */
+    #splash {
+      background: linear-gradient(160deg, var(--navy-dark) 0%, var(--charcoal) 60%, var(--navy) 100%);
+      align-items: center; justify-content: center; gap: 0;
+    }
+    .splash-logo {
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
+    .splash-icon {
+      width: 100px; height: 100px; border-radius: 28px;
+      background: linear-gradient(135deg, var(--teal), var(--navy-light));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 60px rgba(13,148,136,0.4);
+      font-size: 48px; animation: breathe 3s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { box-shadow: 0 0 40px rgba(13,148,136,0.3); }
+      50% { box-shadow: 0 0 80px rgba(13,148,136,0.6); }
+    }
+    .splash-name { font-size: 52px; font-weight: 900; letter-spacing: -1px; }
+    .splash-name span { color: var(--teal-light); }
+    .splash-slogan { font-size: 16px; color: var(--text-muted); text-align: center; line-height: 1.8; }
+    .splash-dots { display: flex; gap: 8px; margin-top: 60px; }
+    .splash-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); }
+    .splash-dot.active { background: var(--teal); width: 24px; border-radius: 4px; }
+
+    /* ── ONBOARDING ── */
+    #onboarding {
+      background: linear-gradient(160deg, var(--navy-dark), var(--charcoal));
+    }
+    .onb-slide { display: none; flex: 1; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; gap: 28px; text-align: center; }
+    .onb-slide.active { display: flex; }
+    .onb-icon { font-size: 72px; }
+    .onb-title { font-size: 26px; font-weight: 800; line-height: 1.4; }
+    .onb-title span { color: var(--teal-light); }
+    .onb-desc { font-size: 16px; color: var(--text-muted); line-height: 1.9; max-width: 320px; }
+    .onb-nav { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+    .onb-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
+    .onb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); transition: all 0.3s; }
+    .onb-dot.active { background: var(--teal); width: 24px; border-radius: 4px; }
+
+    /* ── AUTH ── */
+    #auth {
+      background: linear-gradient(160deg, var(--navy-dark), var(--charcoal));
+      align-items: center; justify-content: center; padding: 28px;
+    }
+    .auth-box { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 20px; }
+    .auth-logo { text-align: center; margin-bottom: 12px; }
+    .auth-logo-icon { font-size: 40px; }
+    .auth-logo-name { font-size: 32px; font-weight: 900; }
+    .auth-logo-name span { color: var(--teal-light); }
+    .auth-logo-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .auth-divider { display: flex; align-items: center; gap: 12px; }
+    .auth-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .auth-divider-text { font-size: 13px; color: var(--text-dim); }
+    .auth-input-group { display: flex; flex-direction: column; gap: 10px; }
+    .auth-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+
+    /* ── GOAL LAB ── */
+    #goallab {
+      background: linear-gradient(160deg, var(--navy-dark), var(--charcoal));
+    }
+    .goallab-header { padding: 20px 20px 0; padding-top: max(20px, env(safe-area-inset-top)); }
+    .goallab-steps { display: flex; gap: 6px; margin-top: 20px; }
+    .goallab-step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.4s; }
+    .goallab-step.done { background: var(--teal); }
+    .goallab-step.active { background: var(--teal-light); }
+    .goallab-content { flex: 1; overflow-y: auto; padding: 28px 20px; display: flex; flex-direction: column; gap: 20px; }
+    .goallab-q { font-size: 20px; font-weight: 800; line-height: 1.5; }
+    .goallab-q span { color: var(--teal-light); }
+    .goallab-hint { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .goallab-footer { padding: 20px; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+
+    /* Options */
+    .option-grid { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      padding: 16px 18px; border-radius: 16px;
+      border: 1.5px solid var(--border);
+      background: var(--charcoal-card);
+      color: var(--text); font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; text-align: right;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .option-btn:active, .option-btn.selected {
+      border-color: var(--teal); background: var(--teal-glow); color: var(--teal-light);
+    }
+    .option-icon { font-size: 20px; }
+
+    /* Plan preview */
+    .plan-preview-card {
+      background: var(--charcoal-card); border-radius: 20px;
+      border: 1px solid var(--border-active); overflow: hidden;
+    }
+    .plan-preview-header {
+      background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      padding: 20px; display: flex; flex-direction: column; gap: 6px;
+    }
+    .plan-summary { font-size: 15px; color: var(--teal-light); font-weight: 700; line-height: 1.6; }
+    .milestone-list { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .milestone-item { display: flex; gap: 12px; align-items: flex-start; }
+    .milestone-week {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      background: var(--teal-glow); border: 1px solid var(--border-active);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: var(--teal-light);
+    }
+    .milestone-info { flex: 1; }
+    .milestone-focus { font-size: 14px; font-weight: 700; }
+    .milestone-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.5; }
+
+    /* ── DASHBOARD ── */
+    #dashboard { overflow-y: auto; padding-bottom: 90px; }
+    .dash-header {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      padding: 20px; padding-top: max(20px, env(safe-area-inset-top));
+    }
+    .dash-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .dash-greeting { font-size: 14px; color: var(--text-muted); }
+    .dash-name { font-size: 22px; font-weight: 800; margin-top: 2px; }
+    .dash-date { font-size: 13px; color: var(--text-dim); margin-top: 2px; }
+    .dash-avatar {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--teal), var(--navy-light));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; cursor: pointer;
+    }
+    .goal-card {
+      background: var(--charcoal-card); border-radius: 20px;
+      border: 1px solid var(--border-active); padding: 18px;
+    }
+    .goal-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .goal-card-label { font-size: 11px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.08em; }
+    .goal-card-title { font-size: 17px; font-weight: 800; margin-top: 4px; line-height: 1.4; }
+    .goal-card-day { font-size: 12px; color: var(--text-muted); }
+    .goal-badge {
+      background: var(--teal-glow); border: 1px solid var(--border-active);
+      border-radius: 10px; padding: 6px 10px; font-size: 13px; font-weight: 700; color: var(--teal-light);
+    }
+    .progress-bar-wrap { margin-top: 4px; }
+    .progress-bar-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .progress-bar { height: 8px; border-radius: 4px; background: var(--navy-dark); overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--teal), var(--teal-light)); transition: width 0.6s ease; }
+
+    .streak-row { display: flex; gap: 10px; margin-top: 16px; }
+    .streak-card {
+      flex: 1; background: var(--charcoal-card); border-radius: 16px;
+      border: 1px solid var(--border); padding: 14px; text-align: center;
+    }
+    .streak-icon { font-size: 24px; }
+    .streak-num { font-size: 22px; font-weight: 900; color: var(--teal-light); margin-top: 4px; }
+    .streak-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 20px 12px;
+    }
+    .section-title { font-size: 16px; font-weight: 800; }
+    .section-sub { font-size: 12px; color: var(--text-muted); }
+
+    /* Task cards */
+    .task-list { display: flex; flex-direction: column; gap: 10px; padding: 0 20px; }
+    .task-card {
+      background: var(--charcoal-card); border-radius: 18px;
+      border: 1px solid var(--border); padding: 16px;
+      transition: all 0.3s;
+    }
+    .task-card.completed { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.04); }
+    .task-card.skipped { border-color: rgba(239,68,68,0.3); background: var(--red-soft); }
+    .task-card.postponed { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.04); }
+    .task-top { display: flex; gap: 12px; align-items: flex-start; }
+    .task-check {
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      border: 2px solid var(--text-dim); cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; margin-top: 2px;
+    }
+    .task-check.done { background: var(--green); border-color: var(--green); }
+    .task-check.done::after { content: '✓'; color: white; font-size: 14px; font-weight: 800; }
+    .task-title { font-size: 15px; font-weight: 600; line-height: 1.5; flex: 1; }
+    .task-title.done { text-decoration: line-through; color: var(--text-dim); }
+    .task-note { font-size: 12px; color: var(--teal); margin-top: 8px; line-height: 1.6; padding-top: 8px; border-top: 1px solid var(--border); font-style: italic; }
+    .task-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .task-action-btn {
+      padding: 6px 12px; border-radius: 20px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .task-action-btn:hover { border-color: var(--text-dim); color: var(--text); }
+    .task-action-btn.danger { border-color: rgba(239,68,68,0.3); color: var(--red-accent); }
+    .task-status-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+    }
+    .badge-completed { background: var(--green-soft); color: var(--green); }
+    .badge-skipped { background: var(--red-soft); color: var(--red-accent); }
+    .badge-postponed { background: rgba(245,158,11,0.1); color: var(--yellow); }
+
+    /* Pulse notification */
+    .pulse-card {
+      margin: 0 20px 4px; background: linear-gradient(135deg, var(--navy), var(--navy-light));
+      border-radius: 20px; border: 1px solid var(--border-active); padding: 18px;
+    }
+    .pulse-icon { font-size: 24px; margin-bottom: 8px; }
+    .pulse-text { font-size: 14px; line-height: 1.8; color: var(--text-muted); }
+    .pulse-text strong { color: var(--text); }
+
+    /* ── MENTOR ── */
+    #mentor { overflow-y: auto; padding-bottom: 90px; }
+    .mentor-header {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      padding: 20px; padding-top: max(20px, env(safe-area-inset-top));
+      text-align: center;
+    }
+    .mentor-avatar { font-size: 60px; margin-bottom: 12px; animation: breathe 3s ease-in-out infinite; }
+    .mentor-title { font-size: 20px; font-weight: 800; }
+    .mentor-sub { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+    .mentor-btn-grid { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .mentor-action-btn {
+      background: var(--charcoal-card); border-radius: 18px;
+      border: 1px solid var(--border); padding: 18px 20px;
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .mentor-action-btn:active { border-color: var(--teal); background: var(--teal-glow); transform: scale(0.98); }
+    .mentor-btn-icon { font-size: 28px; flex-shrink: 0; }
+    .mentor-btn-label { font-size: 15px; font-weight: 700; }
+    .mentor-btn-desc { font-size: 12px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+    .mentor-response {
+      margin: 0 20px; background: var(--charcoal-card);
+      border-radius: 20px; border: 1px solid var(--border-active);
+      padding: 20px; font-size: 15px; line-height: 1.9; color: var(--text);
+    }
+    .mentor-response-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .mentor-response-icon { font-size: 24px; }
+    .mentor-response-title { font-size: 14px; font-weight: 800; color: var(--teal-light); }
+
+    /* ── PROGRESS ── */
+    #progress { overflow-y: auto; padding-bottom: 90px; }
+    .progress-header {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+      padding: 20px; padding-top: max(20px, env(safe-area-inset-top));
+    }
+    .progress-header-title { font-size: 22px; font-weight: 800; }
+    .progress-header-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
+    .stat-card { background: var(--charcoal-card); border-radius: 18px; border: 1px solid var(--border); padding: 18px; }
+    .stat-icon { font-size: 28px; margin-bottom: 8px; }
+    .stat-num { font-size: 28px; font-weight: 900; }
+    .stat-num.teal { color: var(--teal-light); }
+    .stat-num.green { color: var(--green); }
+    .stat-num.red { color: var(--red-accent); }
+    .stat-num.yellow { color: var(--yellow); }
+    .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* Calendar */
+    .calendar-section { padding: 0 20px 20px; }
+    .calendar-title { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .cal-day {
+      aspect-ratio: 1; border-radius: 8px; display: flex;
+      align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+    }
+    .cal-day.success { background: rgba(34,197,94,0.2); color: var(--green); }
+    .cal-day.partial { background: rgba(245,158,11,0.2); color: var(--yellow); }
+    .cal-day.failed { background: var(--red-soft); color: var(--red-accent); }
+    .cal-day.future { background: var(--charcoal-card); color: var(--text-dim); }
+    .cal-day.today { border: 2px solid var(--teal); }
+    .cal-legend { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+    .cal-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+    .cal-legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: var(--charcoal-light); border-top: 1px solid var(--border);
+      display: flex; padding: 10px 0; padding-bottom: max(10px, env(safe-area-inset-bottom));
+      backdrop-filter: blur(20px);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      cursor: pointer; transition: all 0.2s; padding: 4px 0;
+    }
+    .nav-icon { font-size: 22px; }
+    .nav-label { font-size: 11px; font-weight: 700; color: var(--text-dim); }
+    .nav-item.active .nav-label { color: var(--teal-light); }
+    .nav-item.active .nav-icon { filter: drop-shadow(0 0 6px var(--teal)); }
+
+    /* ── MODALS ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      z-index: 200; display: none; align-items: flex-end; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet {
+      background: var(--charcoal-light); border-radius: 28px 28px 0 0;
+      width: 100%; max-width: 500px; padding: 24px;
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      max-height: 85vh; overflow-y: auto;
+    }
+    .modal-handle { width: 40px; height: 4px; border-radius: 2px; background: var(--border); margin: 0 auto 20px; }
+    .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+    .modal-options { display: flex; flex-direction: column; gap: 10px; }
+    .modal-option {
+      padding: 14px 16px; border-radius: 14px;
+      border: 1.5px solid var(--border); background: var(--charcoal-card);
+      color: var(--text); font-size: 14px; font-weight: 600;
+      cursor: pointer; text-align: right; font-family: inherit; transition: all 0.2s;
+    }
+    .modal-option:active { border-color: var(--teal); background: var(--teal-glow); }
+
+    /* ── SHARED COMPONENTS ── */
+    .btn {
+      width: 100%; padding: 17px; border-radius: 16px;
+      font-size: 16px; font-weight: 800; cursor: pointer;
+      border: none; transition: all 0.2s; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-primary { background: linear-gradient(135deg, var(--teal), var(--teal-light)); color: white; }
+    .btn-secondary { background: var(--charcoal-card); color: var(--text); border: 1.5px solid var(--border); }
+    .btn-ghost { background: transparent; color: var(--text-muted); font-size: 14px; }
+
+    .input-field {
+      width: 100%; background: var(--charcoal-card);
+      border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 16px; color: var(--text); font-size: 15px;
+      font-family: inherit; outline: none; transition: border-color 0.2s;
+      resize: none;
+    }
+    .input-field:focus { border-color: var(--teal); }
+    .input-field::placeholder { color: var(--text-dim); }
+    .input-label { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
+
+    /* Loading */
+    .loading-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      z-index: 300; display: none; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px;
+      backdrop-filter: blur(10px);
+    }
+    .loading-overlay.open { display: flex; }
+    .loading-spinner {
+      width: 60px; height: 60px; border: 4px solid var(--border);
+      border-top-color: var(--teal); border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-size: 16px; color: var(--text-muted); text-align: center; line-height: 1.8; }
+    .loading-sub { font-size: 13px; color: var(--text-dim); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      background: var(--charcoal-card); color: var(--text);
+      padding: 12px 24px; border-radius: 24px; font-size: 14px; font-weight: 600;
+      z-index: 999; border: 1px solid var(--border); opacity: 0;
+      transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 28px; }
+    .empty-icon { font-size: 60px; margin-bottom: 16px; }
+    .empty-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+    .empty-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+
+    /* Loading animation for AI */
+    .ai-thinking {
+      display: flex; gap: 6px; align-items: center; justify-content: center; padding: 20px;
+    }
+    .ai-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); animation: bounce 1.2s ease-in-out infinite; }
+    .ai-dot:nth-child(2) { animation-delay: 0.2s; }
+    .ai-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,80%,100% { transform: translateY(0); opacity: 0.5; } 40% { transform: translateY(-10px); opacity: 1; } }
+  </style>
+</head>
+<body>
+
+<!-- ── SPLASH ── -->
+<div class="screen active" id="splash">
+  <div class="splash-logo">
+    <div class="splash-icon">🌱</div>
+    <div class="splash-name">أ<span>ث</span>ر</div>
+    <div class="splash-slogan">خطواتك الصغيرة، إرثك الكبير</div>
+    <div class="splash-dots">
+      <div class="splash-dot active"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ONBOARDING ── -->
+<div class="screen" id="onboarding">
+  <div class="onb-slide active" id="onb1">
+    <div class="onb-icon">🎯</div>
+    <div class="onb-title">حلمك يستحق <span>خطة حقيقية</span></div>
+    <div class="onb-desc">أثر يحوّل حلمك الكبير إلى خطوات يومية صغيرة قابلة للتنفيذ، بمساعدة الذكاء الاصطناعي.</div>
+  </div>
+  <div class="onb-slide" id="onb2">
+    <div class="onb-icon">📋</div>
+    <div class="onb-title">لا فوضى، <span>لا تشتت</span></div>
+    <div class="onb-desc">كل يوم يبدأ بسؤال واحد فقط: "ماذا يجب أن أفعل الآن؟" ولوحة تحكم نظيفة تجيبك فوراً.</div>
+  </div>
+  <div class="onb-slide" id="onb3">
+    <div class="onb-icon">🌟</div>
+    <div class="onb-title">مرشدك الذكي <span>معك دائماً</span></div>
+    <div class="onb-desc">عندما تتعثر، المرشد هنا. يحلل إخفاقاتك، يخفف الضغط، ويمنحك الدفعة التي تحتاجها.</div>
+  </div>
+  <div class="onb-nav">
+    <div class="onb-dots">
+      <div class="onb-dot active" id="onbdot1"></div>
+      <div class="onb-dot" id="onbdot2"></div>
+      <div class="onb-dot" id="onbdot3"></div>
+    </div>
+    <button class="btn btn-primary" id="onb-next-btn" onclick="nextOnb()">التالي ←</button>
+    <button class="btn btn-ghost" onclick="showScreen('auth')">تخطي</button>
+  </div>
+</div>
+
+<!-- ── AUTH ── -->
+<div class="screen" id="auth">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🌱</div>
+      <div class="auth-logo-name">أ<span>ث</span>ر</div>
+      <div class="auth-logo-sub">خطواتك الصغيرة، إرثك الكبير</div>
+    </div>
+    <button class="btn btn-primary" onclick="signInGoogle()" style="gap:10px;">
+      <span>🔐</span> تسجيل الدخول بـ Google
+    </button>
+    <div class="auth-divider">
+      <div class="auth-divider-line"></div>
+      <div class="auth-divider-text">أو</div>
+      <div class="auth-divider-line"></div>
+    </div>
+    <div class="auth-input-group">
+      <div class="input-label">البريد الإلكتروني</div>
+      <input class="input-field" type="email" id="auth-email" placeholder="name@example.com" />
+    </div>
+    <div class="auth-input-group">
+      <div class="input-label">كلمة المرور</div>
+      <input class="input-field" type="password" id="auth-pass" placeholder="••••••••" />
+    </div>
+    <button class="btn btn-secondary" onclick="signInEmail()">دخول / إنشاء حساب</button>
+    <p style="text-align:center;font-size:12px;color:var(--text-dim);line-height:1.7;">بالمتابعة توافق على شروط الخدمة وسياسة الخصوصية</p>
+  </div>
+</div>
+
+<!-- ── GOAL LAB ── -->
+<div class="screen" id="goallab">
+  <div class="goallab-header">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:0.08em;">مختبر الأهداف</div>
+        <div style="font-size:20px;font-weight:900;margin-top:2px;">حدّد حلمك</div>
+      </div>
+      <div style="font-size:13px;color:var(--text-dim);" id="goallab-step-label">1 / 5</div>
+    </div>
+    <div class="goallab-steps" id="goallab-steps">
+      <div class="goallab-step active"></div>
+      <div class="goallab-step"></div>
+      <div class="goallab-step"></div>
+      <div class="goallab-step"></div>
+      <div class="goallab-step"></div>
+    </div>
+  </div>
+  <div class="goallab-content" id="goallab-content">
+    <!-- dynamic -->
+  </div>
+  <div class="goallab-footer">
+    <button class="btn btn-primary" id="goallab-next-btn" onclick="nextGoalStep()">التالي ←</button>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ── -->
+<div class="screen" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-top">
+      <div>
+        <div class="dash-greeting" id="dash-greeting">صباح الخير 🌅</div>
+        <div class="dash-name" id="dash-username">عزيز</div>
+        <div class="dash-date" id="dash-date"></div>
+      </div>
+      <div class="dash-avatar" onclick="showGoalLab()">🌱</div>
+    </div>
+    <div class="goal-card" id="goal-card">
+      <div class="goal-card-top">
+        <div>
+          <div class="goal-card-label">هدفك الكبير</div>
+          <div class="goal-card-title" id="goal-title-dash">لا يوجد هدف محدد بعد</div>
+          <div class="goal-card-day" id="goal-day-dash">ابدأ بتحديد حلمك</div>
+        </div>
+        <div class="goal-badge" id="goal-badge-dash">يوم 0</div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-top">
+          <span>التقدم</span>
+          <span id="progress-percent-dash">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill-dash" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="streak-row">
+      <div class="streak-card">
+        <div class="streak-icon">🔥</div>
+        <div class="streak-num" id="streak-num">0</div>
+        <div class="streak-label">أيام متتالية</div>
+      </div>
+      <div class="streak-card">
+        <div class="streak-icon">✅</div>
+        <div class="streak-num" id="today-done">0</div>
+        <div class="streak-label">مهام اليوم</div>
+      </div>
+      <div class="streak-card">
+        <div class="streak-icon">📅</div>
+        <div class="streak-num" id="days-left">30</div>
+        <div class="streak-label">يوم متبقي</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pulse notification -->
+  <div class="pulse-card" id="pulse-card" style="display:none;">
+    <div class="pulse-icon" id="pulse-icon">⚡</div>
+    <div class="pulse-text" id="pulse-text"></div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">مهام اليوم</div>
+    <div class="section-sub" id="tasks-count-label">0 مهام</div>
+  </div>
+
+  <div class="task-list" id="task-list">
+    <div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <div class="empty-title">لا توجد مهام بعد</div>
+      <div class="empty-desc">ابدأ بتحديد هدفك الكبير وسيقوم الذكاء الاصطناعي ببناء خطتك اليومية.</div>
+      <button class="btn btn-primary" onclick="showGoalLab()" style="margin-top:20px;max-width:260px;margin-inline:auto;">🚀 ابدأ رحلتك</button>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchTab('dashboard')">
+      <div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('mentor')">
+      <div class="nav-icon">🧠</div><div class="nav-label">المرشد</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('progress')">
+      <div class="nav-icon">📊</div><div class="nav-label">التقدم</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MENTOR ── -->
+<div class="screen" id="mentor">
+  <div class="mentor-header">
+    <div class="mentor-avatar">🧠</div>
+    <div class="mentor-title">المرشد الذكي</div>
+    <div class="mentor-sub">أنا هنا لمساعدتك على الاستمرار</div>
+  </div>
+
+  <div class="mentor-btn-grid">
+    <div class="mentor-action-btn" onclick="mentorAction('reschedule')">
+      <div class="mentor-btn-icon">📅</div>
+      <div><div class="mentor-btn-label">أعد جدولة مهامي</div><div class="mentor-btn-desc">توزيع المهام المعلقة على الأيام القادمة بذكاء</div></div>
+    </div>
+    <div class="mentor-action-btn" onclick="mentorAction('lighten')">
+      <div class="mentor-btn-icon">🪶</div>
+      <div><div class="mentor-btn-label">خفّف الخطة</div><div class="mentor-btn-desc">أشعر بضغط كبير، ساعدني على التنفس</div></div>
+    </div>
+    <div class="mentor-action-btn" onclick="mentorAction('challenge')">
+      <div class="mentor-btn-icon">🚀</div>
+      <div><div class="mentor-btn-label">ارفع التحدي</div><div class="mentor-btn-desc">أريد أن أتسارع وأحقق أكثر</div></div>
+    </div>
+    <div class="mentor-action-btn" onclick="mentorAction('analyze_failure')">
+      <div class="mentor-btn-icon">🔍</div>
+      <div><div class="mentor-btn-label">حلّل إخفاقاتي</div><div class="mentor-btn-desc">لماذا أتأخر؟ ما الحل؟</div></div>
+    </div>
+    <div class="mentor-action-btn" onclick="mentorAction('motivate')">
+      <div class="mentor-btn-icon">⚡</div>
+      <div><div class="mentor-btn-label">دفعة تحفيزية</div><div class="mentor-btn-desc">أحتاج طاقة الآن للمضي قدماً</div></div>
+    </div>
+  </div>
+
+  <div id="mentor-response-area"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="switchTab('dashboard')">
+      <div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div>
+    </div>
+    <div class="nav-item active" onclick="switchTab('mentor')">
+      <div class="nav-icon">🧠</div><div class="nav-label">المرشد</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('progress')">
+      <div class="nav-icon">📊</div><div class="nav-label">التقدم</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROGRESS ── -->
+<div class="screen" id="progress">
+  <div class="progress-header">
+    <div class="progress-header-title">سجل التقدم</div>
+    <div class="progress-header-sub" id="prog-goal-name">لا يوجد هدف نشط</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-num green" id="stat-completed">0</div>
+      <div class="stat-label">مهام مكتملة</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-num teal" id="stat-streak">0</div>
+      <div class="stat-label">أيام متتالية</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⏭️</div>
+      <div class="stat-num yellow" id="stat-postponed">0</div>
+      <div class="stat-label">مهام مؤجلة</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">❌</div>
+      <div class="stat-num red" id="stat-skipped">0</div>
+      <div class="stat-label">مهام مُهمَلة</div>
+    </div>
+  </div>
+
+  <div class="calendar-section">
+    <div class="calendar-title">📅 تقويم الشهر</div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(34,197,94,0.5);"></div>مكتمل</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(245,158,11,0.5);"></div>جزئي</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(239,68,68,0.5);"></div>لم يكتمل</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item" onclick="switchTab('dashboard')">
+      <div class="nav-icon">🏠</div><div class="nav-label">الرئيسية</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('mentor')">
+      <div class="nav-icon">🧠</div><div class="nav-label">المرشد</div>
+    </div>
+    <div class="nav-item active" onclick="switchTab('progress')">
+      <div class="nav-icon">📊</div><div class="nav-label">التقدم</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Skip Reason ── -->
+<div class="modal-overlay" id="skip-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">لماذا لم تتمكن من إتمامها؟</div>
+    <div class="modal-options">
+      <button class="modal-option" onclick="confirmSkip('لم يكن لديّ وقت كافٍ')">⏰ لم يكن لديّ وقت كافٍ</button>
+      <button class="modal-option" onclick="confirmSkip('المهمة صعبة جداً')">😰 المهمة صعبة جداً</button>
+      <button class="modal-option" onclick="confirmSkip('شعرت بالإرهاق والتشتت')">😔 شعرت بالإرهاق والتشتت</button>
+      <button class="modal-option" onclick="confirmSkip('نسيت أو لم أتذكر')">😅 نسيت أو لم أتذكر</button>
+      <button class="modal-option" onclick="confirmSkip('ظرف طارئ')">🚨 ظرف طارئ</button>
+    </div>
+    <button class="btn btn-ghost" onclick="closeModal('skip-modal')" style="margin-top:12px;">إلغاء</button>
+  </div>
+</div>
+
+<!-- ── MODAL: Postpone ── -->
+<div class="modal-overlay" id="postpone-modal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">متى ستؤجلها؟</div>
+    <div class="modal-options">
+      <button class="modal-option" onclick="confirmPostpone(1)">📅 غداً</button>
+      <button class="modal-option" onclick="confirmPostpone(2)">📅 بعد يومين</button>
+      <button class="modal-option" onclick="confirmPostpone(3)">📅 بعد 3 أيام</button>
+      <button class="modal-option" onclick="confirmPostpone(7)">📅 الأسبوع القادم</button>
+    </div>
+    <button class="btn btn-ghost" onclick="closeModal('postpone-modal')" style="margin-top:12px;">إلغاء</button>
+  </div>
+</div>
+
+<!-- ── LOADING OVERLAY ── -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loading-text">المرشد يبني خطتك...</div>
+  <div class="loading-sub" id="loading-sub">يحلل هدفك ويضع خارطة الطريق</div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<script>
+const AI_URL = 'https://base44.app/api/apps/6a00fe87373ab56070802e1f/functions/atharAI';
+const today = new Date();
+let currentUser = { name: 'عزيز', email: '' };
+let currentGoal = null;
+let todayTasks = [];
+let activeTaskId = null;
+let onbStep = 1;
+let goalStep = 1;
+let goalData = {};
+
+// ─────────────────────────────────────────────
+// UTILITIES
+// ─────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function showLoading(text = 'جاري التحميل...', sub = '') {
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('loading-sub').textContent = sub;
+  document.getElementById('loading-overlay').classList.add('open');
+}
+
+function hideLoading() {
+  document.getElementById('loading-overlay').classList.remove('open');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function getArabicDate() {
+  return today.toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+function getGreeting() {
+  const h = today.getHours();
+  if (h < 12) return 'صباح الخير 🌅';
+  if (h < 17) return 'مساء النور ☀️';
+  return 'مساء الخير 🌙';
+}
+
+async function callAI(action, params) {
+  const res = await fetch(AI_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...params })
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
+function saveState() {
+  localStorage.setItem('athar_goal', JSON.stringify(currentGoal));
+  localStorage.setItem('athar_tasks', JSON.stringify(todayTasks));
+  localStorage.setItem('athar_user', JSON.stringify(currentUser));
+}
+
+function loadState() {
+  try {
+    const g = localStorage.getItem('athar_goal');
+    const t = localStorage.getItem('athar_tasks');
+    const u = localStorage.getItem('athar_user');
+    if (g) currentGoal = JSON.parse(g);
+    if (t) todayTasks = JSON.parse(t);
+    if (u) currentUser = JSON.parse(u);
+  } catch(e) {}
+}
+
+// ─────────────────────────────────────────────
+// SPLASH → ONBOARDING
+// ─────────────────────────────────────────────
+setTimeout(() => {
+  loadState();
+  if (currentGoal && todayTasks.length > 0) {
+    showScreen('dashboard');
+    renderDashboard();
+  } else if (localStorage.getItem('athar_seen_onb')) {
+    showScreen('auth');
+  } else {
+    showScreen('onboarding');
+  }
+}, 2200);
+
+// ─────────────────────────────────────────────
+// ONBOARDING
+// ─────────────────────────────────────────────
+function nextOnb() {
+  if (onbStep < 3) {
+    document.getElementById(`onb${onbStep}`).classList.remove('active');
+    onbStep++;
+    document.getElementById(`onb${onbStep}`).classList.add('active');
+    document.querySelectorAll('.onb-dot').forEach((d, i) => d.classList.toggle('active', i < onbStep));
+    if (onbStep === 3) document.getElementById('onb-next-btn').textContent = 'ابدأ رحلتك 🚀';
+  } else {
+    localStorage.setItem('athar_seen_onb', '1');
+    showScreen('auth');
+  }
+}
+
+// ─────────────────────────────────────────────
+// AUTH
+// ─────────────────────────────────────────────
+function signInGoogle() {
+  currentUser = { name: 'عزيز', email: 'aziz@example.com' };
+  saveState();
+  if (currentGoal) { showScreen('dashboard'); renderDashboard(); }
+  else { showGoalLab(); }
+}
+
+function signInEmail() {
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email) return showToast('أدخل البريد الإلكتروني');
+  currentUser = { name: email.split('@')[0], email };
+  saveState();
+  if (currentGoal) { showScreen('dashboard'); renderDashboard(); }
+  else { showGoalLab(); }
+}
+
+// ─────────────────────────────────────────────
+// GOAL LAB
+// ─────────────────────────────────────────────
+const GOAL_STEPS = [
+  {
+    q: 'ما هو <span>حلمك الكبير</span>؟',
+    hint: 'اكتب حلمك بوضوح. كلما كان محدداً كلما كانت الخطة أفضل.',
+    type: 'textarea',
+    key: 'dream',
+    placeholder: 'مثال: أريد إطلاق تطبيق ناجح في السوق السعودي خلال 30 يوماً'
+  },
+  {
+    q: 'لماذا <span>هذا الحلم</span> مهم لك؟',
+    hint: 'فهم "السبب" هو ما يبقيك مستمراً في أصعب الأوقات.',
+    type: 'textarea',
+    key: 'purpose',
+    placeholder: 'مثال: لأنني أريد الاستقلال المادي وأثبت لنفسي أنني قادر على البناء'
+  },
+  {
+    q: 'كم <span>وقتاً يومياً</span> يمكنك تخصيصه؟',
+    hint: 'كن صادقاً مع نفسك. الخطة ستُبنى بناءً على وقتك الحقيقي.',
+    type: 'options',
+    key: 'daily_time',
+    options: [
+      { icon: '⚡', label: '30 دقيقة يومياً', value: '30 دقيقة' },
+      { icon: '🎯', label: 'ساعة واحدة يومياً', value: 'ساعة واحدة' },
+      { icon: '🚀', label: 'ساعتان يومياً', value: 'ساعتان' },
+      { icon: '🔥', label: '3 ساعات أو أكثر', value: '3 ساعات أو أكثر' },
+    ]
+  },
+  {
+    q: 'كيف تصف <span>مستواك الحالي</span>؟',
+    hint: 'لا توجد إجابة خاطئة. المرشد سيكيّف الخطة حسب مستواك.',
+    type: 'options',
+    key: 'level',
+    options: [
+      { icon: '🌱', label: 'مبتدئ — أبدأ من الصفر', value: 'مبتدئ' },
+      { icon: '📈', label: 'متوسط — لديّ بعض الخبرة', value: 'متوسط' },
+      { icon: '💪', label: 'متقدم — لكنني بحاجة لانضباط', value: 'متقدم' },
+    ]
+  },
+  {
+    q: 'ما هو <span>أكبر عائق</span> يواجهك؟',
+    hint: 'صراحتك الآن تساعد المرشد على بناء خطة تتحاشى نقاط ضعفك.',
+    type: 'options',
+    key: 'obstacle',
+    options: [
+      { icon: '📱', label: 'التشتت والمواقع الاجتماعية', value: 'التشتت' },
+      { icon: '⏰', label: 'ضيق الوقت والمسؤوليات', value: 'ضيق الوقت' },
+      { icon: '😔', label: 'التسويف وقلة الدافعية', value: 'التسويف' },
+      { icon: '😰', label: 'الخوف من الفشل', value: 'الخوف من الفشل' },
+    ]
+  }
+];
+
+let goalStepIndex = 0;
+
+function showGoalLab() {
+  goalStepIndex = 0;
+  goalData = {};
+  renderGoalStep();
+  showScreen('goallab');
+}
+
+function renderGoalStep() {
+  const step = GOAL_STEPS[goalStepIndex];
+  document.getElementById('goallab-step-label').textContent = `${goalStepIndex + 1} / ${GOAL_STEPS.length}`;
+  const steps = document.getElementById('goallab-steps').children;
+  for (let i = 0; i < steps.length; i++) {
+    steps[i].className = 'goallab-step';
+    if (i < goalStepIndex) steps[i].classList.add('done');
+    else if (i === goalStepIndex) steps[i].classList.add('active');
+  }
+
+  let html = `<div class="goallab-q">${step.q}</div><div class="goallab-hint">${step.hint}</div>`;
+
+  if (step.type === 'textarea') {
+    html += `<textarea class="input-field" id="gl-input" rows="5" placeholder="${step.placeholder}">${goalData[step.key] || ''}</textarea>`;
+  } else if (step.type === 'options') {
+    html += `<div class="option-grid">${step.options.map(o => `
+      <div class="option-btn ${goalData[step.key] === o.value ? 'selected' : ''}" onclick="selectOption('${o.value}', this)">
+        <span class="option-icon">${o.icon}</span>${o.label}
+      </div>
+    `).join('')}</div>`;
+  }
+
+  document.getElementById('goallab-content').innerHTML = html;
+  const isLast = goalStepIndex === GOAL_STEPS.length - 1;
+  document.getElementById('goallab-next-btn').textContent = isLast ? '🚀 ابنِ خطتي بالذكاء الاصطناعي' : 'التالي ←';
+}
+
+function selectOption(val, el) {
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  goalData[GOAL_STEPS[goalStepIndex].key] = val;
+}
+
+async function nextGoalStep() {
+  const step = GOAL_STEPS[goalStepIndex];
+  if (step.type === 'textarea') {
+    const val = document.getElementById('gl-input')?.value.trim();
+    if (!val) return showToast('يرجى إدخال إجابة قبل المتابعة');
+    goalData[step.key] = val;
+  } else if (step.type === 'options') {
+    if (!goalData[step.key]) return showToast('يرجى اختيار خيار قبل المتابعة');
+  }
+
+  if (goalStepIndex < GOAL_STEPS.length - 1) {
+    goalStepIndex++;
+    renderGoalStep();
+  } else {
+    await generatePlan();
+  }
+}
+
+async function generatePlan() {
+  showLoading('المرشد يبني خطتك...', 'يحلل حلمك ويضع خارطة طريق 30 يوماً');
+  try {
+    const data = await callAI('generatePlan', {
+      dream: goalData.dream,
+      duration: 30,
+      purpose: goalData.purpose,
+      daily_time: goalData.daily_time,
+    });
+    const plan = data.plan;
+
+    // Show plan preview
+    hideLoading();
+    showPlanPreview(plan);
+  } catch(e) {
+    hideLoading();
+    showToast('⚠️ ' + e.message);
+  }
+}
+
+function showPlanPreview(plan) {
+  // Build today's tasks from day 1
+  const day1 = plan.daily_tasks?.find(d => d.day === 1) || plan.daily_tasks?.[0];
+
+  const milestonesHtml = (plan.milestones || []).map(m => `
+    <div class="milestone-item">
+      <div class="milestone-week">أ${m.week}</div>
+      <div class="milestone-info">
+        <div class="milestone-focus">${m.focus}</div>
+        <div class="milestone-desc">${m.description || ''}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const content = `
+    <div class="goallab-q">خطتك <span>جاهزة!</span></div>
+    <div class="goallab-hint">راجع الخطة وتأكد أنها مناسبة لك قبل الانطلاق.</div>
+    <div class="plan-preview-card">
+      <div class="plan-preview-header">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:0.08em;">ملخص الهدف</div>
+        <div class="plan-summary">${plan.goal_summary || goalData.dream}</div>
+      </div>
+      <div class="milestone-list">${milestonesHtml}</div>
+    </div>
+    ${day1 ? `
+    <div style="background:var(--charcoal-card);border-radius:16px;padding:16px;border:1px solid var(--border);">
+      <div style="font-size:12px;font-weight:700;color:var(--teal);margin-bottom:10px;">مهام اليوم الأول</div>
+      ${day1.tasks.map(t => `<div style="display:flex;gap:10px;margin-bottom:8px;"><span>▸</span><span style="font-size:14px;">${t}</span></div>`).join('')}
+      ${day1.mentor_note ? `<div style="font-size:12px;color:var(--teal);margin-top:10px;font-style:italic;">💬 "${day1.mentor_note}"</div>` : ''}
+    </div>` : ''}
+  `;
+
+  document.getElementById('goallab-content').innerHTML = content;
+  document.getElementById('goallab-next-btn').textContent = '✅ ابدأ الرحلة الآن';
+  document.getElementById('goallab-next-btn').onclick = () => commitPlan(plan);
+
+  // Update step bar to all done
+  const steps = document.getElementById('goallab-steps').children;
+  for (let i = 0; i < steps.length; i++) steps[i].className = 'goallab-step done';
+  document.getElementById('goallab-step-label').textContent = 'جاهز!';
+}
+
+function commitPlan(plan) {
+  const startDate = new Date();
+  const endDate = new Date();
+  endDate.setDate(endDate.getDate() + 30);
+
+  currentGoal = {
+    id: Date.now().toString(),
+    title: goalData.dream,
+    purpose: goalData.purpose,
+    daily_time: goalData.daily_time,
+    goal_summary: plan.goal_summary,
+    milestones: plan.milestones || [],
+    daily_tasks_plan: plan.daily_tasks || [],
+    status: 'active',
+    progress_percent: 0,
+    streak_days: 0,
+    start_date: startDate.toISOString(),
+    end_date: endDate.toISOString(),
+    current_day: 1,
+    completed_days: {},
+  };
+
+  // Build today's tasks
+  buildTodayTasks(1, plan.daily_tasks);
+  saveState();
+  showScreen('dashboard');
+  renderDashboard();
+  showToast('🎉 انطلقت رحلتك! اليوم الأول يبدأ الآن.');
+}
+
+function buildTodayTasks(dayNum, dailyTasksPlan) {
+  const dayPlan = dailyTasksPlan?.find(d => d.day === dayNum) || dailyTasksPlan?.[0];
+  if (!dayPlan) return;
+  todayTasks = (dayPlan.tasks || []).map((t, i) => ({
+    id: `${dayNum}-${i}`,
+    title: t,
+    mentor_note: i === 0 ? (dayPlan.mentor_note || '') : '',
+    status: 'pending',
+    day_number: dayNum,
+    goalId: currentGoal?.id,
+    created_at: new Date().toISOString(),
+  }));
+}
+
+// ─────────────────────────────────────────────
+// DASHBOARD
+// ─────────────────────────────────────────────
+function renderDashboard() {
+  // Header
+  document.getElementById('dash-greeting').textContent = getGreeting();
+  document.getElementById('dash-username').textContent = currentUser.name || 'عزيز';
+  document.getElementById('dash-date').textContent = getArabicDate();
+
+  // Goal card
+  if (currentGoal) {
+    document.getElementById('goal-title-dash').textContent = currentGoal.title || '';
+    const dayNum = currentGoal.current_day || 1;
+    document.getElementById('goal-day-dash').textContent = `اليوم ${dayNum} من 30 — ${currentGoal.daily_time} يومياً`;
+    document.getElementById('goal-badge-dash').textContent = `يوم ${dayNum}`;
+    const pct = Math.round(((dayNum - 1) / 30) * 100);
+    document.getElementById('progress-percent-dash').textContent = `${pct}%`;
+    document.getElementById('progress-fill-dash').style.width = `${pct}%`;
+    document.getElementById('streak-num').textContent = currentGoal.streak_days || 0;
+    const done = todayTasks.filter(t => t.status === 'completed').length;
+    document.getElementById('today-done').textContent = `${done}/${todayTasks.length}`;
+    document.getElementById('days-left').textContent = 30 - (dayNum - 1);
+  }
+
+  // Pulse notification
+  renderPulse();
+
+  // Tasks
+  renderTasks();
+
+  // Progress page
+  renderProgress();
+}
+
+function renderPulse() {
+  const card = document.getElementById('pulse-card');
+  if (!currentGoal || todayTasks.length === 0) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  const done = todayTasks.filter(t => t.status === 'completed').length;
+  const total = todayTasks.length;
+  const h = today.getHours();
+  let icon = '⚡', text = '';
+  if (h < 12) {
+    icon = '🌅';
+    text = `<strong>يومك خطوة.</strong> لديك ${total} مهام صغيرة تقربك من هدفك: <strong>"${currentGoal.title}"</strong>`;
+  } else if (h < 17) {
+    icon = '☀️';
+    text = `<strong>نصف اليوم مضى.</strong> أنجزت ${done} من ${total}. ${total - done > 0 ? `خطوتان تنقذان يومك.` : 'أحسنت! يومك رائع.'}`; 
+  } else {
+    icon = done === total ? '🌟' : '🌙';
+    text = done === total
+      ? `<strong>أغلقت يومك بشكل رائع.</strong> لا تبحث عن الكمال، فقط استمر.`
+      : `<strong>خطوات اليوم لم تكتمل.</strong> لا تجعل الغد يبدأ بأعباء أمس. اختر خطوة واحدة الآن.`;
+  }
+  document.getElementById('pulse-icon').textContent = icon;
+  document.getElementById('pulse-text').innerHTML = text;
+}
+
+function renderTasks() {
+  const list = document.getElementById('task-list');
+  const countLabel = document.getElementById('tasks-count-label');
+
+  if (!todayTasks.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🎯</div>
+        <div class="empty-title">لا توجد مهام بعد</div>
+        <div class="empty-desc">ابدأ بتحديد هدفك الكبير وسيقوم الذكاء الاصطناعي ببناء خطتك اليومية.</div>
+        <button class="btn btn-primary" onclick="showGoalLab()" style="margin-top:20px;max-width:260px;margin-inline:auto;">🚀 ابدأ رحلتك</button>
+      </div>`;
+    return;
+  }
+
+  const pending = todayTasks.filter(t => t.status === 'pending').length;
+  countLabel.textContent = `${pending} مهام متبقية`;
+
+  list.innerHTML = todayTasks.map(task => {
+    const isDone = task.status === 'completed';
+    const isSkipped = task.status === 'skipped';
+    const isPostponed = task.status === 'postponed';
+
+    let badge = '';
+    if (isDone) badge = `<span class="task-status-badge badge-completed">✅ مكتملة</span>`;
+    else if (isSkipped) badge = `<span class="task-status-badge badge-skipped">❌ ${task.skip_reason || 'مُهملة'}</span>`;
+    else if (isPostponed) badge = `<span class="task-status-badge badge-postponed">⏭️ مؤجلة</span>`;
+
+    const actions = !isDone && !isSkipped && !isPostponed ? `
+      <div class="task-actions">
+        <button class="task-action-btn" onclick="postponeTask('${task.id}')">⏭️ تأجيل</button>
+        <button class="task-action-btn danger" onclick="skipTask('${task.id}')">❌ لم أتمكن</button>
+      </div>` : '';
+
+    return `
+      <div class="task-card ${task.status}" id="task-${task.id}">
+        <div class="task-top">
+          <div class="task-check ${isDone ? 'done' : ''}" onclick="toggleTask('${task.id}')"></div>
+          <div>
+            <div class="task-title ${isDone ? 'done' : ''}">${task.title}</div>
+            ${badge}
+          </div>
+        </div>
+        ${task.mentor_note ? `<div class="task-note">💬 ${task.mentor_note}</div>` : ''}
+        ${actions}
+      </div>`;
+  }).join('');
+}
+
+function toggleTask(id) {
+  const task = todayTasks.find(t => t.id === id);
+  if (!task || task.status === 'skipped' || task.status === 'postponed') return;
+  task.status = task.status === 'completed' ? 'pending' : 'completed';
+  if (task.status === 'completed') task.completed_date = new Date().toISOString();
+  saveState();
+  renderDashboard();
+
+  const allDone = todayTasks.every(t => t.status !== 'pending');
+  if (allDone && todayTasks.some(t => t.status === 'completed')) {
+    setTimeout(() => showToast('🔥 أنجزت كل مهامك اليوم! استمر على هذا النهج.'), 300);
+  }
+}
+
+function skipTask(id) {
+  activeTaskId = id;
+  openModal('skip-modal');
+}
+
+function confirmSkip(reason) {
+  const task = todayTasks.find(t => t.id === activeTaskId);
+  if (task) { task.status = 'skipped'; task.skip_reason = reason; }
+  closeModal('skip-modal');
+  saveState();
+  renderDashboard();
+  showToast('سُجِّل. لا تستسلم — غداً فرصة جديدة.');
+}
+
+function postponeTask(id) {
+  activeTaskId = id;
+  openModal('postpone-modal');
+}
+
+function confirmPostpone(days) {
+  const task = todayTasks.find(t => t.id === activeTaskId);
+  if (task) {
+    task.status = 'postponed';
+    const d = new Date(); d.setDate(d.getDate() + days);
+    task.postponed_to = d.toLocaleDateString('ar-SA');
+  }
+  closeModal('postpone-modal');
+  saveState();
+  renderDashboard();
+  showToast(`📅 مؤجلة لمدة ${days} أيام. التزم بها!`);
+}
+
+// ─────────────────────────────────────────────
+// MENTOR
+// ─────────────────────────────────────────────
+async function mentorAction(type) {
+  if (!currentGoal) return showToast('يرجى تحديد هدف أولاً');
+  const area = document.getElementById('mentor-response-area');
+  area.innerHTML = `<div class="mentor-response"><div class="ai-thinking"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div></div>`;
+
+  const labels = {
+    reschedule: 'إعادة الجدولة',
+    lighten: 'تخفيف الخطة',
+    challenge: 'رفع التحدي',
+    analyze_failure: 'تحليل الإخفاقات',
+    motivate: 'الدفعة التحفيزية',
+  };
+
+  try {
+    const pending = todayTasks.filter(t => t.status === 'pending').map(t => t.title);
+    const done = todayTasks.filter(t => t.status === 'completed').length;
+    const data = await callAI('mentorAction', {
+      type,
+      goalTitle: currentGoal.title,
+      pendingTasks: pending,
+      completedToday: done,
+      streak: currentGoal.streak_days || 0,
+    });
+
+    area.innerHTML = `
+      <div class="mentor-response">
+        <div class="mentor-response-header">
+          <div class="mentor-response-icon">🧠</div>
+          <div class="mentor-response-title">${labels[type]}</div>
+        </div>
+        <div style="font-size:15px;line-height:2;color:var(--text);">${data.message.replace(/\n/g, '<br>')}</div>
+      </div>`;
+  } catch(e) {
+    area.innerHTML = `<div class="mentor-response" style="color:var(--red-accent);">⚠️ ${e.message}</div>`;
+  }
+}
+
+// ─────────────────────────────────────────────
+// PROGRESS
+// ─────────────────────────────────────────────
+function renderProgress() {
+  if (currentGoal) {
+    document.getElementById('prog-goal-name').textContent = currentGoal.title || '';
+  }
+
+  const completed = todayTasks.filter(t => t.status === 'completed').length;
+  const skipped = todayTasks.filter(t => t.status === 'skipped').length;
+  const postponed = todayTasks.filter(t => t.status === 'postponed').length;
+
+  document.getElementById('stat-completed').textContent = completed;
+  document.getElementById('stat-streak').textContent = currentGoal?.streak_days || 0;
+  document.getElementById('stat-postponed').textContent = postponed;
+  document.getElementById('stat-skipped').textContent = skipped;
+
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const grid = document.getElementById('calendar-grid');
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const todayDate = today.getDate();
+
+  grid.innerHTML = '';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const div = document.createElement('div');
+    div.className = 'cal-day';
+    div.textContent = d;
+    const log = currentGoal?.completed_days?.[d];
+    if (d < todayDate) {
+      if (log === 'success') div.classList.add('success');
+      else if (log === 'partial') div.classList.add('partial');
+      else div.classList.add('failed');
+    } else if (d === todayDate) {
+      div.classList.add('today');
+      const done = todayTasks.filter(t => t.status === 'completed').length;
+      const total = todayTasks.length;
+      if (total > 0) {
+        if (done === total) div.classList.add('success');
+        else if (done > 0) div.classList.add('partial');
+      }
+    } else {
+      div.classList.add('future');
+    }
+    grid.appendChild(div);
+  }
+}
+
+// ─────────────────────────────────────────────
+// NAV
+// ─────────────────────────────────────────────
+function switchTab(tab) {
+  ['dashboard','mentor','progress'].forEach(t => {
+    const screen = document.getElementById(t);
+    screen.classList.toggle('active', t === tab);
+  });
+  if (tab === 'progress') renderProgress();
+}
+</script>
+</body>
+</html>
